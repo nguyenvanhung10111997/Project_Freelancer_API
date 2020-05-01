@@ -17,13 +17,5 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.201
-    - name: Define SHORT_HASH Variable
-      run: echo "::set-env name=SHORT_HASH::$(git rev-parse --short ${{github.sha}})"
-    - name: Define MSBUILD_PATH Variable
-      run: echo "::set-env name=MSBUILD_PATH::C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
-    - name: Restore packages
-      run: nuget restore Freelancer_API.sln   
-    - name: Build with MSBuild
-      run: |
-        & "${{env.MSBUILD_PATH}}" Freelancer_API\Freelancer_API.csproj -p:Configuration=Release
-        & "${{env.MSBUILD_PATH}}" Freelancer_API\Freelancer_API.csproj -p:DeployOnBuild=true -p:Configuration=Release -P:PublishProfile=ContinuousIntegrationProfile.pubxml
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
